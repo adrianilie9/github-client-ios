@@ -8,16 +8,20 @@
 import UIKit
 
 class RepositoryTableViewCell: UITableViewCell {
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    // MARK: - UI
+    
+    @IBOutlet var fullNameLabel: UILabel!
+    @IBOutlet var starsCountLabel: UILabel!
+    
+    // MARK: - Content
+    
+    /**
+     * Bind view model with view.
+     *
+     * - paramter viewModel: configured view model
+    */
+    func bind(_ viewModel: RepositoryCellViewModel) {
+        fullNameLabel.text = viewModel.name
+        starsCountLabel.text = "Stars: \(viewModel.stars)"
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
 }
