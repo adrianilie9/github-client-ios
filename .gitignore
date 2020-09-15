@@ -5,3 +5,7 @@
 Podfile.lock
 Pods/
 *.xcworkspace
+
+# Carthage
+Carthage/
+Cartfile.resolved
