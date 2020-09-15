@@ -233,8 +233,15 @@ public class GitHubService: GitHubServiceInterface {
         guard let watcherCount = repositoryJson["watchers_count"].int64 else { return nil }
         guard let forkCount = repositoryJson["forks_count"].int64 else { return nil }
         
-        guard let ownerDict = repositoryJson["owner"].dictionary else { return nil }
-        guard let owner = map(repositoryUserDictionary: ownerDict) else { return nil }
+        var owner: RepositoryUser
+        do {
+            let ownerData = try repositoryJson["owner"].rawData()
+            
+            let decoder = JSONDecoder()
+            owner = try decoder.decode(RepositoryUser.self, from: ownerData)
+        } catch {
+            return nil
+        }
         
         return Repository(
             id: id, name: name, fullName: fullName,
@@ -242,20 +249,5 @@ public class GitHubService: GitHubServiceInterface {
             starsCount: starsCount, watcherCount: watcherCount, forkCount: forkCount,
             owner: owner
         )
-    }
-    
-    /**
-     * Map GitHub repository user fetched from REST API to model.
-     *
-     * - parameter repositoryUserJson: repository user as fetched from REST API
-     * - returns: RepositoryUser model or nil if an error occurs
-     */
-    private func map(repositoryUserDictionary: [String : JSON]) -> RepositoryUser? {
-        guard let id = repositoryUserDictionary["id"]?.int64 else { return nil }
-        guard let login = repositoryUserDictionary["login"]?.string else { return nil }
-        guard let urlHtml = repositoryUserDictionary["html_url"]?.string else { return nil }
-        guard let url = URL(string: urlHtml) else { return nil }
-        
-        return RepositoryUser(id: id, login: login, url: url)
     }
 }
