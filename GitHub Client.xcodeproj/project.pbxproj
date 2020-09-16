@@ -8,8 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3A23DB952510F103006B75C3 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 3A23DB942510F103006B75C3 /* Cartfile */; };
-		3A23DB982510F15B006B75C3 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A23DB972510F15B006B75C3 /* SwiftyJSON.framework */; };
-		3A23DB992510F15B006B75C3 /* SwiftyJSON.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3A23DB972510F15B006B75C3 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3AC3000B2511FB2400FEBE7D /* GitHubResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC3000A2511FB2400FEBE7D /* GitHubResponse.swift */; };
 		A00BF3F5249D06B600E5B7A0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00BF3F4249D06B600E5B7A0 /* AppDelegate.swift */; };
 		A00BF3F7249D06B600E5B7A0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00BF3F6249D06B600E5B7A0 /* SceneDelegate.swift */; };
 		A00BF3FC249D06B600E5B7A0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A00BF3FA249D06B600E5B7A0 /* Main.storyboard */; };
@@ -45,23 +44,10 @@
 		};
 /* End PBXContainerItemProxy section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		3A23DB9A2510F15B006B75C3 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				3A23DB992510F15B006B75C3 /* SwiftyJSON.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		3A23DB942510F103006B75C3 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		3A23DB972510F15B006B75C3 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
+		3AC3000A2511FB2400FEBE7D /* GitHubResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubResponse.swift; sourceTree = "<group>"; };
 		A00BF3F1249D06B600E5B7A0 /* GitHub Client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GitHub Client.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A00BF3F4249D06B600E5B7A0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A00BF3F6249D06B600E5B7A0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -96,7 +82,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A23DB982510F15B006B75C3 /* SwiftyJSON.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,6 +200,7 @@
 		A00BF40E249D071500E5B7A0 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				3AC3000A2511FB2400FEBE7D /* GitHubResponse.swift */,
 				A00BF431249D136000E5B7A0 /* Repository.swift */,
 			);
 			path = Model;
@@ -283,7 +269,6 @@
 				A00BF3ED249D06B600E5B7A0 /* Sources */,
 				A00BF3EE249D06B600E5B7A0 /* Frameworks */,
 				A00BF3EF249D06B600E5B7A0 /* Resources */,
-				3A23DB9A2510F15B006B75C3 /* Embed Frameworks */,
 				3A23DB9B2510F940006B75C3 /* Carthage */,
 			);
 			buildRules = (
@@ -385,7 +370,6 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/SwiftyJSON.framework",
 			);
 			name = Carthage;
 			outputFileListPaths = (
@@ -416,6 +400,7 @@
 				A00BF411249D076400E5B7A0 /* RepositoryListViewController.swift in Sources */,
 				A00BF42D249D113C00E5B7A0 /* ServiceManager.swift in Sources */,
 				A00BF430249D122200E5B7A0 /* GitHubService.swift in Sources */,
+				3AC3000B2511FB2400FEBE7D /* GitHubResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,8 +8,6 @@
 
 import Foundation
 
-import SwiftyJSON
-
 public enum GitHubServiceError: ServiceError {
     case requestError
     case responseError
@@ -122,25 +120,12 @@ public class GitHubService: GitHubServiceInterface {
                 return
             }
             
+            let decoder = JSONDecoder()
             do {
-                // extract repository list from response
-                let decodedResponse = try JSON(data: data)
-                guard let repositoriesJson = decodedResponse["items"].array else {
-                    OperationQueue.main.addOperation { completionHandler(.failure(.responseError)) }
-                    return
-                }
-                
-                // map fetched repositories to model
-                OperationQueue.main.addOperation {
-                    completionHandler(.success(
-                        repositoriesJson.compactMap({ (repositoryJson) -> Repository? in
-                            return self.map(repositoryJson: repositoryJson)
-                        })
-                    ))
-                }
+                let response = try decoder.decode(GitHubResponseItems<Repository>.self, from: data)
+                OperationQueue.main.addOperation { completionHandler(.success(response.items)) }
             } catch {
                 OperationQueue.main.addOperation { completionHandler(.failure(.responseError)) }
-                return
             }
         }
         task.resume()
@@ -186,68 +171,14 @@ public class GitHubService: GitHubServiceInterface {
                 return
             }
             
+            let decoder = JSONDecoder()
             do {
-                // extract file contents from response
-                let decodedResponse = try JSON(data: data)
-                guard let contentEncoded = decodedResponse["content"].string else {
-                    OperationQueue.main.addOperation { completionHandler(.failure(.notFound)) }
-                    return
-                }
-                
-                // decode file contents
-                guard let contentData = Data(base64Encoded: contentEncoded, options: .ignoreUnknownCharacters) else {
-                    OperationQueue.main.addOperation { completionHandler(.failure(.responseError)) }
-                    return
-                }
-                guard let content = String(data: contentData, encoding: .utf8) else {
-                    OperationQueue.main.addOperation { completionHandler(.failure(.responseError)) }
-                    return
-                }
-                
-                OperationQueue.main.addOperation { completionHandler(.success(content)) }
+                let response = try decoder.decode(GitHubResponseContent.self, from: data)
+                OperationQueue.main.addOperation { completionHandler(.success(response.content)) }
             } catch {
                 OperationQueue.main.addOperation { completionHandler(.failure(.responseError)) }
-                return
             }
         }
         task.resume()
-    }
-    
-    // MARK: - Model mapping
-    
-    /**
-     * Map GitHub repository fetched from REST API to model.
-     *
-     * - parameter repositoryJson: repository as fetched from REST API
-     * - returns: Repository model or nil if an error occurs
-     */
-    private func map(repositoryJson: JSON) -> Repository? {
-        guard let id = repositoryJson["id"].int64 else { return nil }
-        guard let name = repositoryJson["name"].string else { return nil }
-        guard let fullName = repositoryJson["full_name"].string else { return nil }
-        
-        guard let urlHtml = repositoryJson["html_url"].string else { return nil }
-        guard let url = URL(string: urlHtml) else { return nil }
-        
-        guard let starsCount = repositoryJson["stargazers_count"].int64 else { return nil }
-        guard let watcherCount = repositoryJson["watchers_count"].int64 else { return nil }
-        guard let forkCount = repositoryJson["forks_count"].int64 else { return nil }
-        
-        var owner: RepositoryUser
-        do {
-            let ownerData = try repositoryJson["owner"].rawData()
-            
-            let decoder = JSONDecoder()
-            owner = try decoder.decode(RepositoryUser.self, from: ownerData)
-        } catch {
-            return nil
-        }
-        
-        return Repository(
-            id: id, name: name, fullName: fullName,
-            url: url,
-            starsCount: starsCount, watcherCount: watcherCount, forkCount: forkCount,
-            owner: owner
-        )
     }
 }
