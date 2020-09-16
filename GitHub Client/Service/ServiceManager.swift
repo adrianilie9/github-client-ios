@@ -20,6 +20,7 @@ public enum ServiceResult<Error: ServiceError, T> {
 public typealias ServiceResultClosure<Error: ServiceError, T> = (ServiceResult<Error, T>) -> Void
 
 public class ServiceManager {
+    
     public static let shared = ServiceManager()
     private init() { }
     

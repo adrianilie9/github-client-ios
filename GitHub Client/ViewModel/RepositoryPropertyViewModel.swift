@@ -9,6 +9,7 @@
 import Foundation
 
 class RepositoryPropertyViewModel {
+    
     let starsCount: String
     let watchersCount: String
     let forksCount: String

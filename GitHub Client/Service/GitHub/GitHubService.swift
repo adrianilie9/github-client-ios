@@ -41,9 +41,6 @@ public protocol GitHubServiceInterface {
 }
 
 public class GitHubService: GitHubServiceInterface {
-    init() {
-        
-    }
     
     // MARK: - Sync
     
@@ -64,12 +61,10 @@ public class GitHubService: GitHubServiceInterface {
         return URLSession(configuration: config, delegate: nil, delegateQueue: self.syncQueue)
     }()
     
-    /**
-     * Fetch GitHub iOS repositories using REST API.
-     *
-     * - parameter page: page number
-     * - parameter completionHandler: closure to execute after fetch process completes successfully or a failure occurs
-     */
+    /// Fetch GitHub iOS repositories using REST API.
+    ///
+    /// - parameter page: page number
+    /// - parameter completionHandler: closure to execute after fetch process completes successfully or a failure occurs
     public func list(page: Int64, completionHandler: @escaping ServiceResultClosure<GitHubServiceError, [Repository]>) {
         // encode request parameters
         var requestParameters: String?
@@ -131,12 +126,10 @@ public class GitHubService: GitHubServiceInterface {
         task.resume()
     }
     
-    /**
-     * Fetch GitHub repository README file contents.
-     *
-     * - parameter repository: repository model
-     * - parameter completionHandler: closure to execute after fetch process completes successfully or a failure occurs
-     */
+    /// Fetch GitHub repository README file contents.
+    ///
+    /// - parameter repository: repository model
+    /// - parameter completionHandler: closure to execute after fetch process completes successfully or a failure occurs
     public func getReadme(repository: Repository, completionHandler: @escaping ServiceResultClosure<GitHubServiceError, String>) {
         // create request URL
         guard let requestUrl = URL(string: "https://api.github.com/repos/\(repository.owner.login)/\(repository.name)/contents/README.md") else {

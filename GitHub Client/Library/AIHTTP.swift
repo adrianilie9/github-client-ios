@@ -9,18 +9,17 @@
 import Foundation
 
 public class AIHTTP {
+    
     public enum EncodingError: Error {
         case invalidParameterName
         case invalidParameterValue
         case invalidEncoding
     }
     
-    /**
-     * Encode HTTP request parameters for transport.
-     *
-     * - parameter params: HTTP request parameters payload
-     * - returns: parameters joined and escaped
-     */
+    /// Encode HTTP request parameters for transport.
+    ///
+    /// - parameter params: HTTP request parameters payload
+    /// - returns: parameters joined and escaped
     public static func encodeRequestParameters(_ params: [String:String]) throws -> String? {
         var encodedParameters: [String] = []
         
@@ -36,12 +35,10 @@ public class AIHTTP {
         return encodedParameters.joined(separator: "&")
     }
     
-    /**
-     * Decode HTTP request parameters.
-     *
-     * - parameter params: encoded HTTP request parameters
-     * - returns: HTTP request parameters decoded
-     */
+    /// Decode HTTP request parameters.
+    ///
+    /// - parameter params: encoded HTTP request parameters
+    /// - returns: HTTP request parameters decoded
     public static func decodeRequestParameters(_ params: String) throws -> [String:String]? {
         var decodedParameters: [String:String] = [:]
         

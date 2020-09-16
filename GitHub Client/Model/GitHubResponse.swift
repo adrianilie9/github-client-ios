@@ -9,6 +9,7 @@
 import Foundation
 
 public struct GitHubResponseItems<T: Decodable>: Decodable {
+    
     public enum GitHubResponseItemsError: Error {
         case decode(String)
     }
@@ -35,6 +36,7 @@ public struct GitHubResponseItems<T: Decodable>: Decodable {
 }
 
 public struct GitHubResponseContent: Decodable {
+    
     public enum GitHubResponseContentError: Error {
         case decode(String)
     }

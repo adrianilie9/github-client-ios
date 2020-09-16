@@ -11,6 +11,7 @@ import Foundation
 // MARK: - Repository user
 
 public struct RepositoryUser: Decodable {
+    
     public enum RepositoryUserError: Error {
         case decode(String)
     }
@@ -52,6 +53,7 @@ extension RepositoryUser: Equatable {
 // MARK: - Repository
 
 public struct Repository: Decodable {
+    
     public enum RepositoryError: Error {
         case decode(String)
     }

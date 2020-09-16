@@ -9,6 +9,7 @@
 import UIKit
 
 class RepositoryPropertyView: UIView {
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         
@@ -32,11 +33,8 @@ class RepositoryPropertyView: UIView {
     
     private var ownerUrl: URL?
     
-    /**
-     * Bind view model with view.
-     *
-     * - paramter viewModel: configured view model
-    */
+    /// Bind view model with view.
+    /// - parameter viewModel: configured view model
     func bind(_ viewModel: RepositoryPropertyViewModel) {
         starLabel.text = viewModel.starsCount
         watcherLabel.text = viewModel.watchersCount

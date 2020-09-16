@@ -9,6 +9,7 @@
 import UIKit
 
 class RepositoryCellViewModel {
+    
     let cellIdentifier = "Repository"
     let cellHeight: CGFloat = 80.0
     

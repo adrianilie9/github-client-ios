@@ -8,6 +8,7 @@
 import UIKit
 
 class RepositoryTableViewCell: UITableViewCell {
+    
     // MARK: - UI
     
     @IBOutlet var fullNameLabel: UILabel!
@@ -15,11 +16,8 @@ class RepositoryTableViewCell: UITableViewCell {
     
     // MARK: - Content
     
-    /**
-     * Bind view model with view.
-     *
-     * - paramter viewModel: configured view model
-    */
+    /// Bind view model with view.
+    /// - parameter viewModel: configured view model
     func bind(_ viewModel: RepositoryCellViewModel) {
         fullNameLabel.text = viewModel.name
         starsCountLabel.text = "Stars: \(viewModel.stars)"
