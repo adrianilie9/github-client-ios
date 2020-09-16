@@ -14,14 +14,14 @@ class Observable<T> {
             observer?(value)
         }
     }
-    
+
     typealias Observer = (T) -> Void
     var observer: Observer? {
         didSet {
             observer?(value)
         }
     }
-    
+
     init(_ value: T) {
         self.value = value
     }

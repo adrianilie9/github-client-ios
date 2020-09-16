@@ -12,15 +12,18 @@ import XCTest
 
 class TestRepositoryCellViewModel: XCTestCase {
     func testBind() {
-        let owner = RepositoryUser(id: 1, login: "githubUser", url: URL(string: "https://example.com/path?q=query&secondParameter=example#anchor")!)
+        let owner = RepositoryUser(
+            identifier: 1, login: "githubUser",
+            url: URL(string: "https://example.com/path?q=query&secondParameter=example#anchor")!
+        )
         let repository = Repository(
-            id: 1, name: "repoName", fullName: "repoOwner/repoName",
+            identifier: 1, name: "repoName", fullName: "repoOwner/repoName",
             url: URL(string: "https://example.com/path?q=query&secondParameter=example#anchor")!,
             starsCount: 1, watcherCount: 2, forkCount: 3,
             owner: owner
         )
         let viewModel = RepositoryCellViewModel(repository)
-        
+
         XCTAssertEqual(viewModel.repository, repository)
         XCTAssertEqual(viewModel.name, repository.fullName)
         XCTAssertEqual(viewModel.stars, "\(repository.starsCount)")

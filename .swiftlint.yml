@@ -1,0 +1,4 @@
+disabled_rules: # rules identifiers to exclude from running
+
+excluded:
+- Carthage

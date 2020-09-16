@@ -9,19 +9,19 @@
 import Foundation
 
 class RepositoryPropertyViewModel {
-    
+
     let starsCount: String
     let watchersCount: String
     let forksCount: String
-    
+
     let ownerName: String
     let ownerUrl: URL
-    
+
     init(_ repository: Repository) {
         starsCount = "\(repository.starsCount)"
         watchersCount = "\(repository.watcherCount)"
         forksCount = "\(repository.forkCount)"
-        
+
         ownerName = repository.owner.login
         ownerUrl = repository.owner.url
     }

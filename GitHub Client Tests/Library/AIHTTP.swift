@@ -12,29 +12,31 @@ import XCTest
 
 class TestAIHTTP: XCTestCase {
     func testRequestParametersEncodingAndDecoding() {
-        let singleParameterPayload: [String:String] = [
+        let singleParameterPayload: [String: String] = [
             "Parameter": "Value"
         ]
-        let multipleParameterPayload: [String:String] = [
+        let multipleParameterPayload: [String: String] = [
             "Integer": "1",
             "String": "The quick brown fox jumps over the lazy dog",
             "SpecialCharacters? ": "$&+,/:;=?@ \"<>#%{}|\\^~[]`"
         ]
-        
+
         for testPayload in [singleParameterPayload, multipleParameterPayload] {
             do {
                 guard let encodedPayload = try AIHTTP.encodeRequestParameters(testPayload) else {
                     XCTAssertTrue(false, "Encoding request payload yelds no result.")
                     return
                 }
-                
-                XCTAssertNil(encodedPayload.rangeOfCharacter(from: CharacterSet(charactersIn: "$+,/:;?@ \"<>#{}|\\^~[]`")))
-                
+
+                XCTAssertNil(
+                    encodedPayload.rangeOfCharacter(from: CharacterSet(charactersIn: "$+,/:;?@ \"<>#{}|\\^~[]`"))
+                )
+
                 guard let decodedPayload = try AIHTTP.decodeRequestParameters(encodedPayload) else {
                     XCTAssertTrue(false, "Decoding request payload yelds no result.")
                     return
                 }
-                
+
                 for (name, value) in testPayload {
                     XCTAssertNotNil(decodedPayload[name])
                     XCTAssertEqual(value, decodedPayload[name])

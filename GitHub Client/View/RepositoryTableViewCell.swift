@@ -8,14 +8,14 @@
 import UIKit
 
 class RepositoryTableViewCell: UITableViewCell {
-    
+
     // MARK: - UI
-    
+
     @IBOutlet var fullNameLabel: UILabel!
     @IBOutlet var starsCountLabel: UILabel!
-    
+
     // MARK: - Content
-    
+
     /// Bind view model with view.
     /// - parameter viewModel: configured view model
     func bind(_ viewModel: RepositoryCellViewModel) {

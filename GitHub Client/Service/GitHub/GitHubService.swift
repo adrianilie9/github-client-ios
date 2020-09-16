@@ -14,21 +14,21 @@ public enum GitHubServiceError: ServiceError {
     case networkError
     case apiLimitReached
     case notFound
-    
+
     public var message: String {
         switch self {
         case .requestError:
             return "Cannot perform request to GitHub REST API."
-            
+
         case .responseError:
             return "Cannot understand response from GitHub REST API."
-            
+
         case .networkError:
             return "Cannot connect to GitHub server, make sure you are connected to the internet."
-        
+
         case .apiLimitReached:
             return "Exceeded maximum request allowed for GitHub REST API. Please try again later."
-            
+
         case .notFound:
             return "Resource not found."
         }
@@ -37,34 +37,37 @@ public enum GitHubServiceError: ServiceError {
 
 public protocol GitHubServiceInterface {
     func list(page: Int64, completionHandler: @escaping ServiceResultClosure<GitHubServiceError, [Repository]>)
-    func getReadme(repository: Repository, completionHandler: @escaping ServiceResultClosure<GitHubServiceError, String>)
+    func getReadme(
+        repository: Repository,
+        completionHandler: @escaping ServiceResultClosure<GitHubServiceError, String>
+    )
 }
 
 public class GitHubService: GitHubServiceInterface {
-    
+
     // MARK: - Sync
-    
+
     lazy private var syncQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.qualityOfService = .userInitiated
         queue.maxConcurrentOperationCount = 1
         return queue
     }()
-    
+
     lazy private var syncSession: URLSession = {
         let config = URLSessionConfiguration.ephemeral
         config.isDiscretionary = false
         config.waitsForConnectivity = true
         config.timeoutIntervalForRequest = 15.0
         config.timeoutIntervalForResource = 15.0
-        
         return URLSession(configuration: config, delegate: nil, delegateQueue: self.syncQueue)
     }()
-    
+
     /// Fetch GitHub iOS repositories using REST API.
     ///
     /// - parameter page: page number
     /// - parameter completionHandler: closure to execute after fetch process completes successfully or a failure occurs
+    // swiftlint:disable function_body_length
     public func list(page: Int64, completionHandler: @escaping ServiceResultClosure<GitHubServiceError, [Repository]>) {
         // encode request parameters
         var requestParameters: String?
@@ -83,13 +86,15 @@ public class GitHubService: GitHubServiceInterface {
             OperationQueue.main.addOperation { completionHandler(.failure(.requestError)) }
             return
         }
-        
+
         // create request URL including query parameters
-        guard let requestUrl = URL(string: "https://api.github.com/search/repositories?\(requestParametersEncoded)") else {
+        guard let requestUrl = URL(
+            string: "https://api.github.com/search/repositories?\(requestParametersEncoded)"
+        ) else {
             OperationQueue.main.addOperation { completionHandler(.failure(.requestError)) }
             return
         }
-        
+
         // performing HTTP request
         var request = URLRequest(url: requestUrl)
         request.httpMethod = "GET"
@@ -108,13 +113,14 @@ public class GitHubService: GitHubServiceInterface {
                 switch httpResponse.statusCode {
                 case 403:
                     error = .apiLimitReached
+
                 default:
                     error = .responseError
                 }
                 OperationQueue.main.addOperation { completionHandler(.failure(error)) }
                 return
             }
-            
+
             let decoder = JSONDecoder()
             do {
                 let response = try decoder.decode(GitHubResponseItems<Repository>.self, from: data)
@@ -125,18 +131,23 @@ public class GitHubService: GitHubServiceInterface {
         }
         task.resume()
     }
-    
+
     /// Fetch GitHub repository README file contents.
     ///
     /// - parameter repository: repository model
     /// - parameter completionHandler: closure to execute after fetch process completes successfully or a failure occurs
-    public func getReadme(repository: Repository, completionHandler: @escaping ServiceResultClosure<GitHubServiceError, String>) {
+    public func getReadme(
+        repository: Repository,
+        completionHandler: @escaping ServiceResultClosure<GitHubServiceError, String>
+    ) {
         // create request URL
-        guard let requestUrl = URL(string: "https://api.github.com/repos/\(repository.owner.login)/\(repository.name)/contents/README.md") else {
+        guard let requestUrl = URL(
+            string: "https://api.github.com/repos/\(repository.owner.login)/\(repository.name)/contents/README.md"
+        ) else {
             OperationQueue.main.addOperation { completionHandler(.failure(.requestError)) }
             return
         }
-        
+
         // performing HTTP request
         var request = URLRequest(url: requestUrl)
         request.httpMethod = "GET"
@@ -155,15 +166,17 @@ public class GitHubService: GitHubServiceInterface {
                 switch httpResponse.statusCode {
                 case 403:
                     error = .apiLimitReached
+
                 case 404:
                     error = .notFound
+
                 default:
                     error = .responseError
                 }
                 OperationQueue.main.addOperation { completionHandler(.failure(error)) }
                 return
             }
-            
+
             let decoder = JSONDecoder()
             do {
                 let response = try decoder.decode(GitHubResponseContent.self, from: data)
